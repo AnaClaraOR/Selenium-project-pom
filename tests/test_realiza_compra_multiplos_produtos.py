@@ -1,16 +1,17 @@
 import pytest
-from selenium.webdriver.common.by import By
 import conftest
+from selenium.webdriver.common.by import By
+from pages.login_page import LoginPage
 
 
 @pytest.mark.usefixtures("setup_teardown")
 class TestCT05:
     def test_ct05_realiza_compra_multiplos_produtos(self):
         driver = conftest.driver
+        login_page = LoginPage()
+
         # Login
-        driver.find_element(By.ID, "user-name").send_keys("standard_user")
-        driver.find_element(By.ID, "password").send_keys("secret_sauce")
-        driver.find_element(By.ID, "login-button").click()
+        login_page.fazer_login("standard_user", "secret_sauce")
 
         # Adicionando o primeiro produto ao carrinho
         driver.find_element(By.XPATH, "//*[@class='inventory_item_name ' and text()='Sauce Labs Backpack']").click()
