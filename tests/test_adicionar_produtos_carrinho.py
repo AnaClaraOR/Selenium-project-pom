@@ -1,5 +1,5 @@
 import pytest
-import conftest
+#import conftest
 
 from pages.carrinho_page import CarrinhoPage
 from pages.home_page import HomePage
