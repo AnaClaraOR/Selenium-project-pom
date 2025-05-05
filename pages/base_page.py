@@ -1,4 +1,7 @@
 import conftest
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver import ActionChains, Keys
 
 class BasePage:
     def __init__(self):
@@ -18,3 +21,36 @@ class BasePage:
 
     def pegar_texto_elemento(self, locator):
         return self.encontrar_elemento(locator).text
+
+    # OUTROS NÉTODOS ÚTEIS
+    # Esperar um elemento aparecer
+    def esperar_elemento_aparecer(self, locator, timeout=10):
+        return WebDriverWait(self.driver, timeout).until(EC.presence_of_element_located(*locator))
+
+    # Verificar se o elemento existe
+    def verificar_elemento_existe(self, locator):
+        assert self.encontrar_elemento(locator), f"Elemento '{locator}' não existe, mas é esperado que exista."
+
+    # Verificar se o elemento não existe
+    #def verificar_elemento_nao_existe(self, locator):
+    #    assert len(self.encontrar_elemento(locator)) == 0, f"Elemento '{locator}' existe, mas o esperado é que não exista."
+
+    # Clique duplo num elemento
+    def clique_duplo(self, locator):
+        element = self.esperar_elemento_aparecer(locator)
+        ActionChains(self.driver).double_click(element).perform()
+
+    # Clique com o botão direito do mouse
+    def clique_botao_direito(self, locator):
+        element = self.esperar_elemento_aparecer(locator)
+        ActionChains(self.driver).context_click(element).perform()
+
+    # Cliques utilizando as teclas do teclado
+    def pressionar_tecla(self, locator, key):
+        elem = self.encontrar_elemento(locator)
+        if key == "ENTER":
+            elem.send_keys(Keys.ENTER)
+        elif key == "ESPACO":
+            elem.send_keys(Keys.SPACE)
+        elif key == "F1":
+            elem.send_keys(Keys.F1)
